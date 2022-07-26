@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <h1>All Book</h1>
@@ -17,22 +18,21 @@
           <th>No.</th>
           <th>BookName</th>
           <th>Author</th>
-          <th>Published Date</th>
         </tr>
       </thead>
       <tbody v-for="(item, index) in data" :key="item.id">
         <tr @dblclick="edit(item)">
 
           <td>{{ index + 1 }}</td>
-          <td>{{item.bookName}}</td>
-          <td>{{item.author}}</td>
-          <td>{{item.publishedDate}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.type}}</td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
 <script lang="ts">
+/* eslint-disable */
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { bookService } from "@/service/BookService";
 import { BookResponse } from "@/models/book/BookResponse";
@@ -67,9 +67,8 @@ export default class BookListPage extends Vue {
         this.data = [];
         this.data.push({
           id: res.data.id,
-          bookName: res.data.bookName,
-          author: res.data.author,
-          publishedDate: res.data.publishedDate,
+          name: res.data.name,
+          type: res.data.type,
         });
       });
     }

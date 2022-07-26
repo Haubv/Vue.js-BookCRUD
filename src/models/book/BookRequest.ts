@@ -1,8 +1,9 @@
+import { TypeBook } from "./TypeBook";
+
 export class BookRequest {
     public id? : number;
-    public bookName? : string;
-    public author? : string;
-    public publishedDate? : string;
+    public name? : string;
+    public typeBook? : TypeBook;
     constructor(init?: Partial<BookRequest>) {
         Object.assign(this, init);
     }

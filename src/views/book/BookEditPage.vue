@@ -16,10 +16,10 @@
                       <div>
                         <label>BookName :</label>
                       </div>
-                      <div class="row-75"><input type="text" text-align="center"  v-model="data.bookName" placeholder = "Name : " ></div>
+                      <div class="row-75"><input type="text" text-align="center"  v-model="data.name" placeholder = "Name : " ></div>
                     </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <div class="row-25">
                         <div><label>Author : </label></div>
                         <div class="row-75"><input type="text" v-model="data.author" placeholder = "Author : " ></div>
@@ -30,7 +30,7 @@
                      <label>PublishedDate : </label>
                     </div>
                     <div class="row-75"><input type="text" v-model="data.publishedDate" placeholder = "PublishedDate : " ></div>
-                </div>
+                </div> -->
             </form>
             <div class="row">
         <button @click="cancel">Cancel</button>
@@ -41,7 +41,8 @@
     </div>
 </template>
 <script lang="ts">
-    //Edit dùng cho request.
+  /* eslint-disable */
+    //Edit cho request.
     import { Component, Prop, Vue } from 'vue-property-decorator';
     import { bookService } from '@/service/BookService';
     import { BookRequest } from '@/models/book/BookRequest';
@@ -60,24 +61,24 @@ export default class BookEditPage extends Vue {
         }
     }
     save() {
-      if(this.data.bookName != null || this.data.author != null || this.data.publishedDate != null) {
-          if (this.isEdit) {
-                      bookService.updateBook(this.data).then((res) => {
-                          this.goListBook();
-                      });
-                  } else {
-                      bookService.saveBook(this.data).then((res) => {
-                          this.goListBook();
-                      });
-                  }
-      }else {
+      if(this.data.name && this.data.typeBook) {
+        if (this.isEdit) {
+          bookService.updateBook(this.data).then((res) => {
+            this.goListBook();
+          });               
+        } else {
+          bookService.saveBook(this.data).then((res) => {
+            this.goListBook(); 
+          });
+        }
+      } else {
         alert("Must not let the fields empty");
       }     
     }
     dele() {
         const id = Number(this.data.id);
         bookService.deleteById(id).then((res) => {
-            alert('Đã xóa: ' + this.data.bookName);
+            alert('Đã xóa: ' + this.data.name);
             this.goListBook();
         });
     }

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 
 class BookService extends Vue {
-    private ROOT_API = 'https://62d8fbf59088313935983ad7.mockapi.io/api/books';
+    private ROOT_API = 'http://localhost:8080/api/book';
     public getAllBooks() {
         return axios.get(this.ROOT_API);
     }
