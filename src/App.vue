@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <router-view/> -->
     <nav class="navbar navbar-expand navbar-dark bg-dark">
       <a  class="navbar-brand" @click.prevent>ASIA</a>
       <div class="navbar-nav mr-auto">
@@ -11,15 +10,17 @@
         </li>
         <li v-if="showAdminBoard" class="nav-item">
           <router-link to="/admin" class="nav-link">Admin Board</router-link>
-          <router-link to="/#" class="nav-link">Get Information</router-link>
         </li>
         <li v-if="showModeratorBoard" class="nav-item">
           <router-link to="/mod" class="nav-link">Moderator Board</router-link>
         </li>
-        <li class="nav-item">
+         <li class="nav-item">
           <router-link v-if="currentUser" to="/user" class="nav-link"
-            >User Board</router-link
-          >
+            >User Board</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link v-if="currentUser" to="/book" class="nav-link"
+            >Book</router-link>
         </li>
       </div>
 
@@ -51,9 +52,9 @@
       </div>
     </nav>
 
-    <div class="container">
+    <!-- <div class="container"> -->
       <router-view />
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 <script lang="ts">

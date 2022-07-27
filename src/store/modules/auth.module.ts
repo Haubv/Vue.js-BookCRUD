@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 import AuthService from '@/service/AuthService';
 

@@ -14,12 +14,34 @@
                 <div class="row">
                     <div class="row-25">
                       <div>
-                        <label>BookName :</label>
+                        <label>Book Name :</label>
                       </div>
                       <div class="row-75"><input type="text" text-align="center"  v-model="data.name" placeholder = "Name : " ></div>
                     </div>
                 </div>
-                <!-- <div class="row">
+                <div class="row">
+                  <div class="row-25">
+                      <div><label>Book Type : </label></div>
+                  <div class="row-75" v-if="listTypeOfBook">
+                    <select v-model="data.typeBookId" name="typeBookId">
+                      <!-- <option
+                        v-for="option in listTypeOfBook"
+                        :value="option.id"
+                        :key="option.id">
+                          {{ option.name }}
+                        </option> -->
+                        <option
+                          v-for="(item, index) in listTypeOfBook"
+                          :key="index"
+                          :label="item.name"
+                          :value="item.id"
+                        >
+                        </option>
+                    </select>
+                  </div>
+                </div>
+                </div>
+                <div class="row">
                     <div class="row-25">
                         <div><label>Author : </label></div>
                         <div class="row-75"><input type="text" v-model="data.author" placeholder = "Author : " ></div>
@@ -27,14 +49,14 @@
                 </div>
                 <div class="row">
                     <div class="row-25">
-                     <label>PublishedDate : </label>
+                        <div><label>Published Date : </label></div>
+                        <div class="row-75"><input type="text" v-model="data.publishedDate" placeholder = "Published Date :  " ></div>
                     </div>
-                    <div class="row-75"><input type="text" v-model="data.publishedDate" placeholder = "PublishedDate : " ></div>
-                </div> -->
+                </div>
             </form>
             <div class="row">
         <button @click="cancel">Cancel</button>
-        <button @click="save">Save</button>
+        <button @click="handleCreator">Save</button>
         <button @click="dele" v-show="isEdit" class="delete">Delete</button>
             </div>
         </div>
@@ -46,35 +68,53 @@
     import { Component, Prop, Vue } from 'vue-property-decorator';
     import { bookService } from '@/service/BookService';
     import { BookRequest } from '@/models/book/BookRequest';
+  
 
 @Component
 export default class BookEditPage extends Vue {
     data: BookRequest = new BookRequest();
+    listTypeOfBook: any [] = [];
     isEdit = false;
-    created() {
-        if (this.$router.currentRoute.params.id) {
-          const id = Number(this.$router.currentRoute.params.id);
-          this.isEdit = true;
-          bookService.getBookById(id).then((res) => {
-            this.data = res.data;
-          });
-        }
+    async created() {
+      await this.getListTypeOfBook();
+      if (this.$router.currentRoute.params.id) {
+        const id = Number(this.$router.currentRoute.params.id);
+        this.isEdit = true;
+        bookService.getBookById(id).then((res) => {
+          this.data = res.data.data;
+        });
+      }
     }
-    save() {
-      if(this.data.name && this.data.typeBook) {
-        if (this.isEdit) {
-          bookService.updateBook(this.data).then((res) => {
-            this.goListBook();
-          });               
+    handleCreator() {
+        if(this.data.name && this.data.author && this.data.publishedDate ) {
+          if (this.isEdit) {
+            bookService.updateBook(this.data).then((res) => {
+              this.goListBook();
+            });               
+          } else {
+            bookService.saveBook(this.data).then((res) => {
+              this.goListBook(); 
+            });
+          }
         } else {
-          bookService.saveBook(this.data).then((res) => {
-            this.goListBook(); 
-          });
+          alert("Must not let the fields empty");
         }
-      } else {
-        alert("Must not let the fields empty");
-      }     
     }
+    // save() {
+    //   if(this.data.name && this.data.typeBook) {
+    //     if (this.isEdit) {
+    //       bookService.updateBook(this.data).then((res) => {
+    //         this.goListBook();
+    //       });               
+    //     } else {
+    //       bookService.saveBook(this.data).then((res) => {
+    //         this.goListBook(); 
+    //       });
+    //     }
+    //   } else {
+    //     alert("Must not let the fields empty");
+    //   }     
+    // }
     dele() {
         const id = Number(this.data.id);
         bookService.deleteById(id).then((res) => {
@@ -91,6 +131,11 @@ export default class BookEditPage extends Vue {
                 name: 'book',
             },
         );
+    }
+    getListTypeOfBook() {
+      bookService.getBookType().then(res => {
+        this.listTypeOfBook = res.data;
+      })
     }
 }
 </script>
@@ -172,7 +217,7 @@ input[type=submit]:hover {
 }
 
 input {
-  width: 50% !important;
+  width: 100% !important;
 }
 
 /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */

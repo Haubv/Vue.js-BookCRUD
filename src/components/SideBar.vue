@@ -10,7 +10,7 @@
                 </div>
             </router-link>
         </div>
-    </div>
+    </div>  
 </template>
 <script lang="ts">
 export default {
@@ -54,7 +54,7 @@ export default {
     position: relative;
     background-color: rgb(201, 185, 185);
     color: rgb(206, 116, 20);
-    font-weight: 100;
+    /* font-weight: 100; */
 }
 
 .side-btn.active::before {

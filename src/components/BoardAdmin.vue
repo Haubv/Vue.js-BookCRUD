@@ -11,7 +11,7 @@ import { Component, Vue } from "vue-property-decorator";
 import UserService from '../service/UserService';
 
 @Component
-export default class AdminBoard extends Vue {
+export default class BoardAdmin extends Vue {
     content = "";
 
     mounted() {

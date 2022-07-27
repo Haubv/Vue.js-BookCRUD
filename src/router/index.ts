@@ -53,29 +53,22 @@ const routes: Array<RouteConfig> = [
     component: Login,
   },
   {
-    path: '',
-    component: Dashboard,
-    children: [
-      {
-        path: '/book',
-        name: 'book',
-        component: BookListPage,
-      },
-      {
-        path: '/book',
-        name: 'book_edit',
-        component: BookEditPage,
-      },
-      {
-        path: '/book',
-        name: 'book_add',
-        component: BookEditPage,
-      },
-      
-
-    ]
-  }
+    path: '/book',
+    name: 'book',
+    component: BookListPage,
+  },
+  {
+    path: '/book/:id',
+    name: 'book_edit',
+    component: BookEditPage,
+  },
+  {
+    path: '/book',
+    name: 'book_add',
+    component: BookEditPage,
+  },
 ]
+
 
 const router = new VueRouter({
   mode: 'history',

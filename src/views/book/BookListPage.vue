@@ -7,17 +7,19 @@
         v-model="searchId"
         class="search-text"
         type="string"
-        placeholder="Search by id"
+        placeholder="Tìm theo id"
       />
-      <button class="button" @click="searchById">Search</button>
-      <button class="button" @click="add">Add Book</button>
+      <button class="button" @click="searchById">Tìm kiếm</button>
+      <button class="button" @click="add">Thêm</button>
     </div>
     <table>
       <thead>
         <tr>
           <th>No.</th>
-          <th>BookName</th>
-          <th>Author</th>
+          <th>Tên sách</th>
+          <th>Thể loại</th>
+          <th>Tác Giả</th>
+          <th>Ngày Phát Hành</th>
         </tr>
       </thead>
       <tbody v-for="(item, index) in data" :key="item.id">
@@ -25,7 +27,9 @@
 
           <td>{{ index + 1 }}</td>
           <td>{{item.name}}</td>
-          <td>{{item.type}}</td>
+          <td>{{item.typeBook}}</td>
+          <td>{{item.author}}</td>
+          <td>{{item.publishedDate}}</td>
         </tr>
       </tbody>
     </table>
@@ -64,12 +68,16 @@ export default class BookListPage extends Vue {
     const id = Number(this.searchId);
     if (id !== 0) {
       bookService.getBookById(id).then((res) => {
+        console.log(res.data.data);
         this.data = [];
         this.data.push({
-          id: res.data.id,
-          name: res.data.name,
-          type: res.data.type,
+          id: res.data.data.id,
+          name: res.data.data.name,
+          author: res.data.data.author,
+          typeBook: res.data.data.typeBook,
+          publishedDate: res.data.data.publishedDate,
         });
+        
       });
     }
   }
@@ -85,20 +93,19 @@ table {
 
 th {
   
-  color: white;
-  border-radius: 30%;
-  background-color: #1589e1;
+  color:black;
+  
+  background-color: white;
 }
 
 th,
 td {
   min-width: 120px;
   padding: 10px 20px;
-  border-radius: 25px;
 }
 button {
-  background-color: #0dde29;
-  color: white;
+  background-color: white;
+  color: black;
   padding: 12px 20px;
   border: none;
   border-radius: 4px;
@@ -106,9 +113,13 @@ button {
   margin-top: 20px;
   float: none;
   margin-left: 30px;
+  border : 1px solid black;
 }
 tr:hover {
   background-color: #0df168;
+}
+button:hover {
+  color : #0df168;
 }
 .search-text {
   width: 300px;
