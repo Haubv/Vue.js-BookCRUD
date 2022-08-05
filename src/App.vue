@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a  class="navbar-brand" @click.prevent>ASIA</a>
+      <a class="navbar-brand" @click.prevent>ASIA</a>
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
           <router-link to="/home" class="nav-link">
@@ -14,7 +14,7 @@
         <li v-if="showModeratorBoard" class="nav-item">
           <router-link to="/mod" class="nav-link">Moderator Board</router-link>
         </li>
-         <li class="nav-item">
+        <li class="nav-item">
           <router-link v-if="currentUser" to="/user" class="nav-link"
             >User Board</router-link>
         </li>
@@ -52,9 +52,9 @@
       </div>
     </nav>
 
-    <!-- <div class="container"> -->
+    <div class="container">
       <router-view />
-    <!-- </div> -->
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -65,6 +65,7 @@ const Auth = namespace("Auth");
 @Component
 export default class App extends Vue {
   @Auth.State("user")
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   currentUser!: any;
 
   @Auth.Action
@@ -93,25 +94,7 @@ export default class App extends Vue {
 }
 </script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-  background-color: #7daaad;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+body, html{
+  background-color : #343a40!important;
 }
 </style>

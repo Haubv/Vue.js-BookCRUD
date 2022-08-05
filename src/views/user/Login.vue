@@ -53,7 +53,7 @@
         <div class="form-group">
           <div v-if="message" class="alert alert-danger" role="alert">
             {{ message }}
-          </div>
+        </div>
         </div>
       </form>
     </div>
@@ -68,14 +68,17 @@ const Auth = namespace("Auth");
 
 @Component
 export default class Login extends Vue {
-  user : UserRequest = new UserRequest();
+  user: UserRequest = new UserRequest();
   loading?: boolean = false;
   message?: string = "";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  errors?: any;
 
   @Auth.Getter
   private isLoggedIn!: boolean;
 
   @Auth.Action
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private login!: (data: any) => Promise<any>;
 
   created() {
@@ -94,6 +97,7 @@ export default class Login extends Vue {
 
       if (this.user.username && this.user.password) {
         this.login(this.user).then(
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           (data) => {
             this.$router.push("/profile");
           },

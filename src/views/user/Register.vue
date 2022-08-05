@@ -78,9 +78,10 @@ const Auth = namespace("Auth");
 
 @Component
 export default class Register extends Vue {
-  
     user: UserRequest = new UserRequest();
     submitted?: boolean = false;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    errors?: any;
     successful?: boolean = false;
     message?: string = "";
 
@@ -88,6 +89,7 @@ export default class Register extends Vue {
   private isLoggedIn!: boolean;
 
   @Auth.Action
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private register!: (data: any) => Promise<any>;
 
   mounted() {

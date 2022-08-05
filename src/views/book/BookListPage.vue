@@ -20,6 +20,7 @@
           <th>Thể loại</th>
           <th>Tác Giả</th>
           <th>Ngày Phát Hành</th>
+          <th>Path</th>
         </tr>
       </thead>
       <tbody v-for="(item, index) in data" :key="item.id">
@@ -30,6 +31,7 @@
           <td>{{item.typeBook}}</td>
           <td>{{item.author}}</td>
           <td>{{item.publishedDate}}</td>
+          <td><button>{{item.pathFile}}</button></td>
         </tr>
       </tbody>
     </table>
@@ -67,6 +69,7 @@ export default class BookListPage extends Vue {
   searchById() {
     const id = Number(this.searchId);
     if (id !== 0) {
+      
       bookService.getBookById(id).then((res) => {
         console.log(res.data.data);
         this.data = [];
@@ -76,8 +79,7 @@ export default class BookListPage extends Vue {
           author: res.data.data.author,
           typeBook: res.data.data.typeBook,
           publishedDate: res.data.data.publishedDate,
-        });
-        
+        });     
       });
     }
   }
@@ -85,18 +87,36 @@ export default class BookListPage extends Vue {
 </script>
 
 <style scoped>
+h1 {
+  color : white;
+}
 table {
   margin: auto;
   border: 2px solid #42b983;
   border-radius: 25px;
 }
 
-th {
-  
-  color:black;
-  
+td {
+  color :black;
+  background-color : white;
+  text-align: center;
+}
+td>button {
+  border :none;
+}
+
+th {  
+  color:white;
+  background-color: aqua;
+  text-align: center;
+}
+
+th:hover {
+  color:aqua;
   background-color: white;
 }
+
+
 
 th,
 td {
@@ -115,8 +135,9 @@ button {
   margin-left: 30px;
   border : 1px solid black;
 }
-tr:hover {
-  background-color: #0df168;
+
+td:hover {
+  background-color: #0df168!;
 }
 button:hover {
   color : #0df168;

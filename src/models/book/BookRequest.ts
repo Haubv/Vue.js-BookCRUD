@@ -1,5 +1,3 @@
-
-
 export class BookRequest {
     public id? : number;
     public name? : string;
@@ -7,6 +5,9 @@ export class BookRequest {
     public publishedDate? : string;
     public typeBook? : string;
     public typeBookId? : number | null;
+    public pathFile? : string;
+    public fileBookId? : number;
+    public description? : string;
     constructor(init?: Partial<BookRequest>) {
         Object.assign(this, init);
     }

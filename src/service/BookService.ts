@@ -27,6 +27,12 @@ class BookService extends Vue {
       public getBookType() {
         return axios.get(this.ROOT_API + '/type', { headers: {Authorization: 'Bearer ' + authHeader()}});
       }
+
+      // public saveFileBook() {
+      //   return axios.get(this.ROOT_API + '/file-book', { headers: {Authorization: 'Bearer ' + authHeader()}});
+      // }
+
+     
 }
 
 export const bookService = new BookService();

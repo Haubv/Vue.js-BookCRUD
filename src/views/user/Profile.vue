@@ -2,8 +2,10 @@
   <div class="container">
     <header class="jumbotron">
       <h3>
-        <strong>{{ currentUser.username }}</strong> Profile
+        <strong>{{ currentUser.username }}</strong> 
       </h3>
+      <br>
+      <div class = "profile">Profile</div>
     </header>
     <p>
       <strong>Token:</strong>
@@ -18,7 +20,8 @@
       <strong>Email:</strong>
       {{ currentUser.email }}
     </p>
-    <strong>Authorities:</strong>
+    <p><strong>Authorities:</strong>
+    </p>  
     <ul>
       <li v-for="(role, index) in currentUser.roles" :key="index">
         {{ role }}
@@ -35,6 +38,7 @@ const Auth = namespace("Auth");
 @Component
 export default class Profile extends Vue {
   @Auth.State("user")
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   currentUser!: any;
 
   mounted() {
@@ -44,3 +48,11 @@ export default class Profile extends Vue {
   }
 }
 </script>
+<style>
+p ,ul{
+  color :white;
+}
+.profile {
+  font-size : 30px;
+}
+</style>

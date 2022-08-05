@@ -2,18 +2,18 @@
     <div>
         <h1>{{isEdit? 'Use For Edit' : 'Use For Add'}}</h1>
         <div class="form-input">
-            <form>
+            <form action="/file-book" method="post" enctype="multipart/form-data">
             <div v-show="isEdit" class="row">
           <div class="col-25">
             <label>Id</label>
           </div>
             <div class="col-25">
-            <input type="number" :disabled="isEdit" v-model="data.id" placeholder="Id ...">
+            <input class = "stable" type="number" :disabled="isEdit" v-model="data.id" placeholder="Id ...">
           </div>
             </div>
                 <div class="row">
                     <div class="row-25">
-                      <div>
+                      <div class = "edit">
                         <label>Book Name :</label>
                       </div>
                       <div class="row-75"><input type="text" text-align="center"  v-model="data.name" placeholder = "Name : " ></div>
@@ -21,7 +21,7 @@
                 </div>
                 <div class="row">
                   <div class="row-25">
-                      <div><label>Book Type : </label></div>
+                      <div class = "edit"><label>Book Type : </label></div>
                   <div class="row-75" v-if="listTypeOfBook">
                     <select v-model="data.typeBookId" name="typeBookId">
                       <!-- <option
@@ -43,21 +43,38 @@
                 </div>
                 <div class="row">
                     <div class="row-25">
-                        <div><label>Author : </label></div>
+                        <div class = "edit"><label>Author : </label></div>
                         <div class="row-75"><input type="text" v-model="data.author" placeholder = "Author : " ></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="row-25">
-                        <div><label>Published Date : </label></div>
+                        <div class = "edit"><label>Published Date : </label></div>
                         <div class="row-75"><input type="text" v-model="data.publishedDate" placeholder = "Published Date :  " ></div>
                     </div>
                 </div>
+                <div class="row">
+                  <div class="row-25">
+                      <div class = "edit"><label>File : </label></div>
+                      <input
+                        ref="fileInput"
+                        type="file"
+                        @change="onFileChange"
+                        @click="resetFileValue"
+                    />
+                </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="row-25">
+                        <div class = "edit"><label>Description :  </label></div>
+                        <div class="row-75"><input type="text" v-model="fileBook.desc" placeholder = "Description : " ></div>
+                    </div>
+                </div> -->
             </form>
             <div class="row">
         <button @click="cancel">Cancel</button>
         <button @click="handleCreator">Save</button>
-        <button @click="dele" v-show="isEdit" class="delete">Delete</button>
+        <button @click="del" v-show="isEdit" class="delete">Delete</button>
             </div>
         </div>
     </div>
@@ -68,13 +85,19 @@
     import { Component, Prop, Vue } from 'vue-property-decorator';
     import { bookService } from '@/service/BookService';
     import { BookRequest } from '@/models/book/BookRequest';
+    import { fileBookService } from '@/service/FileBookService';
+    import { FileBook } from '@/models/book/FileBook'
   
 
 @Component
 export default class BookEditPage extends Vue {
+
     data: BookRequest = new BookRequest();
+    fileBook: FileBook = new FileBook(); 
     listTypeOfBook: any [] = [];
     isEdit = false;
+    file?: File;
+
     async created() {
       await this.getListTypeOfBook();
       if (this.$router.currentRoute.params.id) {
@@ -85,20 +108,33 @@ export default class BookEditPage extends Vue {
         });
       }
     }
-    handleCreator() {
-        if(this.data.name && this.data.author && this.data.publishedDate ) {
-          if (this.isEdit) {
+
+    async handleCreator() {
+      if(this.data.name && this.data.author && this.data.publishedDate ) {
+        console.log(this.fileBook);
+        debugger;
+        if (this.isEdit) {
+          await fileBookService.saveFileBook(this.file).then(res => {
+            this.data.fileBookId = res.data.id;
             bookService.updateBook(this.data).then((res) => {
-              this.goListBook();
-            });               
-          } else {
-            bookService.saveBook(this.data).then((res) => {
-              this.goListBook(); 
-            });
-          }
+            this.goListBook();
+            }); 
+          })
+                        
         } else {
-          alert("Must not let the fields empty");
+          // save filebook
+          await fileBookService.saveFileBook(this.file).then(res => {
+            this.data.fileBookId = res.data.id;
+            // nếu save filebook thành công thì save book
+            bookService.saveBook(this.data).then((res) => {
+            this.goListBook(); 
+            });
+          })
+          
         }
+      } else {
+        alert("Must not let the fields empty");
+      } 
     }
     // save() {
     //   if(this.data.name && this.data.typeBook) {
@@ -115,16 +151,32 @@ export default class BookEditPage extends Vue {
     //     alert("Must not let the fields empty");
     //   }     
     // }
-    dele() {
+
+    resetFileValue(): void {
+      const fileInput = this.$refs.fileInput as any;
+      fileInput.value = null;
+    }
+
+    onFileChange(event: any): void {
+      const files: File[] = event.target.files || event.dataTransfer.files;
+      if (!files.length) {
+        return;
+      }
+      this.file = files[0];
+    }
+
+    del() {
         const id = Number(this.data.id);
         bookService.deleteById(id).then((res) => {
             alert('Đã xóa: ' + this.data.name);
             this.goListBook();
         });
     }
+    
     cancel() {
         this.goListBook();
     }
+
     goListBook() {
         this.$router.push(
             {
@@ -132,17 +184,33 @@ export default class BookEditPage extends Vue {
             },
         );
     }
+
     getListTypeOfBook() {
       bookService.getBookType().then(res => {
         this.listTypeOfBook = res.data;
       })
     }
+
 }
 </script>
 
 <style scoped>
 * {
   box-sizing: border-box;
+}
+input.stable {
+  color :white;
+}
+h1 {
+  color :white;
+}
+
+.col-25 {
+  color :white;
+}
+
+.edit {
+  color :white;
 }
 .form-input{
   margin: auto;
@@ -200,6 +268,8 @@ input[type=submit]:hover {
   margin-top: 6px;
 }
 
+
+
 .col-75 {
   float: left;
   width: 50%;
@@ -217,6 +287,7 @@ input[type=submit]:hover {
 }
 
 input {
+  color :black;
   width: 100% !important;
 }
 

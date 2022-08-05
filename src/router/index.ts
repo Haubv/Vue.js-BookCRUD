@@ -1,11 +1,12 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Dashboard from '../views/DashBoard.vue';
 import BookEditPage from '../views/book/BookEditPage.vue';
 import BookListPage from '../views/book/BookListPage.vue';
 import Login from '../views/user/Login.vue'
 import Home from '../views/Home.vue'
 import Register from '../views/user/Register.vue'
+
+
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
@@ -68,7 +69,6 @@ const routes: Array<RouteConfig> = [
     component: BookEditPage,
   },
 ]
-
 
 const router = new VueRouter({
   mode: 'history',
