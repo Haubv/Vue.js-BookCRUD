@@ -15,9 +15,13 @@ class FileBookService extends Vue {
             "Content-Type": "multipart/form-data"}});
     }
 
-    public loadFileBook(id:number) {
+    public markAsRead(id:number) {
         return axios.get<any>(this.ROOT_URL+ '/' + id, { headers: {Authorization: 'Bearer ' + authHeader()}});
 
+    }
+
+    public loadListFile() {
+        return axios.get<any>(this.ROOT_URL , { headers: {Authorization: 'Bearer ' + authHeader()}});
     }
 
 }

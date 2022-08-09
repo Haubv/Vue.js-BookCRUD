@@ -31,7 +31,7 @@
           <td>{{item.typeBook}}</td>
           <td>{{item.author}}</td>
           <td>{{item.publishedDate}}</td>
-          <td><button>{{item.pathFile}}</button></td>
+          <td><button @click="readBook(item)">{{item.pathFile}}</button></td>
         </tr>
       </tbody>
     </table>
@@ -42,6 +42,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { bookService } from "@/service/BookService";
 import { BookResponse } from "@/models/book/BookResponse";
+import { fileBookService } from "@/service";
+
 //List dùng cho response.
 @Component
 export default class BookListPage extends Vue {
@@ -82,6 +84,12 @@ export default class BookListPage extends Vue {
         });     
       });
     }
+  }
+  readBook(item:any) {
+    if(!item.fileBookId) return ;
+    fileBookService.markAsRead(item.fileBookId).then((res) => {
+      alert("read");
+    });
   }
 }
 </script>

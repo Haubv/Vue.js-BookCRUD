@@ -1,5 +1,4 @@
 import Vue, { VNode } from 'vue'
-
 declare global {
   namespace JSX {
     interface Element extends VNode {}
@@ -7,5 +6,12 @@ declare global {
     interface IntrinsicElements {
       [elem: string]: any
     }
+
+  }
+
+  interface Window {
+    AdobeDC: any; // 👈️ turn off type checking
   }
 }
+
+export {};

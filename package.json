@@ -11,16 +11,20 @@
         "@fortawesome/fontawesome-svg-core": "^1.2.30",
         "@fortawesome/free-solid-svg-icons": "^5.14.0",
         "@fortawesome/vue-fontawesome": "^2.0.0",
-        "axios": "^0.20.0",
         "bootstrap": "^4.5.2",
         "bootstrap-vue": "^2.22.0",
+        "axios": "^0.27.2",
         "core-js": "^3.8.3",
         "jquery": "^3.5.1",
+        "pdfjs": "^2.4.7",
+        "pdfjs-dist": "^2.15.349",
+        "pdfvuer": "^1.9.2",
         "popper.js": "^1.16.1",
         "vee-validate": "^2.2.15",
         "vue": "^2.7.8",
         "vue-class-component": "^7.2.3",
         "vue-pdf": "^4.3.0",
+        "vue-pdf-app": "^2.1.0",
         "vue-property-decorator": "^9.1.2",
         "vue-router": "^3.5.1",
         "vuex": "^3.5.1",
@@ -28,6 +32,7 @@
         "vuex-module-decorators": "^0.17.0"
     },
     "devDependencies": {
+        "@types/pdfjs-dist": "^2.10.378",
         "@typescript-eslint/eslint-plugin": "^5.4.0",
         "@typescript-eslint/parser": "^5.4.0",
         "@vue/cli-plugin-babel": "~5.0.0",
@@ -41,6 +46,7 @@
         "sass": "^1.54.1",
         "sass-loader": "^10.3.1",
         "typescript": "~4.5.5",
-        "vue-template-compiler": "^2.6.14"
+        "vue-template-compiler": "^2.6.14",
+        "worker-loader": "^3.0.8"
     }
 }

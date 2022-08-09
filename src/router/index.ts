@@ -5,6 +5,7 @@ import BookListPage from '../views/book/BookListPage.vue';
 import Login from '../views/user/Login.vue'
 import Home from '../views/Home.vue'
 import Register from '../views/user/Register.vue'
+import FileBookListPage from '../views/file_book/FileBookListPage.vue'
 
 
 Vue.use(VueRouter)
@@ -26,6 +27,11 @@ const routes: Array<RouteConfig> = [
   {
     path: '/register',
     component: Register
+  },
+  {
+    path: '/file-book',
+    name : 'view',
+    component: FileBookListPage
   },
   {
     path: '/profile',
@@ -64,7 +70,7 @@ const routes: Array<RouteConfig> = [
     component: BookEditPage,
   },
   {
-    path: '/book',
+    path: '/book/add',
     name: 'book_add',
     component: BookEditPage,
   },
