@@ -22,6 +22,16 @@
         <li class="nav-item">
           <router-link v-if="currentUser" to="/book" class="nav-link">Book</router-link>
         </li>
+        <li class="nav-item">
+          <router-link v-if="currentUser" to="/file-book" class="nav-link"
+            >File</router-link
+          >
+        </li>
+        <li class="nav-item">
+          <router-link v-if="currentUser" to="/fav" class="nav-link"
+            >Favorite</router-link
+          >
+        </li>
       </div>
       <div v-if="!currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
@@ -35,7 +45,6 @@
           </router-link>
         </li>
       </div>
-
       <div v-if="currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
           <router-link to="/profile" class="nav-link">
@@ -59,6 +68,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
+
+
 const Auth = namespace("Auth");
 
 @Component

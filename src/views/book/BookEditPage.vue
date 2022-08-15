@@ -51,7 +51,6 @@
                 ></option>
               </select>
             </div>
-            <pdf src="../../../../../All/TLKH.pdf" :page="1"></pdf>
           </div>
         </div>
         <div class="row">
@@ -80,6 +79,7 @@
             <input
               ref="fileInput"
               type="file"
+              multiple
               @change="onFileChange"
               @click="resetFileValue"
             />
@@ -92,25 +92,25 @@
         <button @click="del" v-show="isEdit" class="delete">Delete</button>
       </div>
     </div>
-    <pdf :src="pdfsrc"></pdf>
+
   </div>
 </template>
 <script lang="ts">
 /* eslint-disable */
 //Edit cho request.
-import { Component, Ref, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { bookService } from "@/service/BookService";
 import { BookRequest } from "@/models/book/BookRequest";
 import { fileBookService } from "@/service/FileBookService";
-// import pdf from "vue-pdf";
+import pdfjs  from 'pdfjs-dist';
 // import { FileBook } from "@/models/book/FileBook";
 
 @Component
-// ({
-//   components: {
-//     pdf,
-//   },
-// })
+({
+  components: {
+    pdfjs,
+  },
+})
 export default class BookEditPage extends Vue {
   data: BookRequest = new BookRequest();
   fileBook: any;
@@ -118,8 +118,7 @@ export default class BookEditPage extends Vue {
   isEdit = false;
   file?: File;
   innerId: any;
-  // getFilePath = "E:\images\10638-PDF-file-39339-2-10-20220216.pdf";
-  pdfsrc: any;
+  
 
   async created() {
     await this.getListTypeOfBook();
@@ -130,12 +129,9 @@ export default class BookEditPage extends Vue {
         this.data = res.data.data;
         let fileBookId = this.data.fileBookId;
         fileBookService.markAsRead(Number(fileBookId)).then((res) => {
-          this.pdfsrc = new Uint8Array(res.data);
-          // console.log(this.fileBook);
         });
       });
     }
-    // console.log('window', window.AdobeDC);
   }
 
   async handleCreator() {
@@ -163,21 +159,7 @@ export default class BookEditPage extends Vue {
       alert("Must not let the fields empty");
     }
   }
-  // save() {
-  //   if(this.data.name && this.data.typeBook) {
-  //     if (this.isEdit) {
-  //       bookService.updateBook(this.data).then((res) => {
-  //         this.goListBook();
-  //       });
-  //     } else {
-  //       bookService.saveBook(this.data).then((res) => {
-  //         this.goListBook();
-  //       });
-  //     }
-  //   } else {
-  //     alert("Must not let the fields empty");
-  //   }
-  // }
+
   resetFileValue(): void {
     const fileInput = this.$refs.fileInput as any;
     fileInput.value = null;

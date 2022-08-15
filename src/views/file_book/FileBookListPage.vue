@@ -18,10 +18,9 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Ref, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { FileBook } from "@/models";
 import { fileBookService } from "@/service";
-// import pdf from "vue-pdf";
 // @Component({
 //   components: {
 //     pdf,
@@ -30,12 +29,14 @@ import { fileBookService } from "@/service";
 @Component
 export default class FileBookListPage extends Vue {
   data: FileBook[] = [];
+  id?: number;
 
   created() {
     return fileBookService.loadListFile().then((res) => {
       this.data = res.data;
     });
   }
+  
 }
 </script>
 <style scoped>
@@ -92,40 +93,4 @@ td:hover {
 button:hover {
   color: #0df168;
 }
-.search-text {
-  width: 300px;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: vertical;
-}
-.b {
-  margin: 10px;
-}
-.button {
-  border-radius: 25px;
-}
-.search-text {
-  width: 20%;
-}
-/* .active-pink-4 input[type=text]:focus:not([readonly]) {
-    border: 1px solid #f48fb1;
-    box-shadow: 0 0 0 1px #f48fb1;
-  }
-  .active-pink-3 input[type=text] {
-    border: 1px solid #f48fb1;
-    box-shadow: 0 0 0 1px #f48fb1;
-  }
-  .active-purple-4 input[type=text]:focus:not([readonly]) {
-    border: 1px solid #ce93d8;
-    box-shadow: 0 0 0 1px #ce93d8;
-  }
-  .active-purple-3 input[type=text] {
-    border: 1px solid #ce93d8;
-    box-shadow: 0 0 0 1px #ce93d8;
-  }
-  .active-cyan-4 input[type=text]:focus:not([readonly]) {
-    border: 1px solid #4dd0e1;
-    box-shadow: 0 0 0 1px #4dd0e1;
-  } */
 </style>

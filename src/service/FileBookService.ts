@@ -24,6 +24,11 @@ class FileBookService extends Vue {
         return axios.get<any>(this.ROOT_URL , { headers: {Authorization: 'Bearer ' + authHeader()}});
     }
 
+    public serveFile(id:number) {
+        return axios.post<any>(this.ROOT_URL + '/'+ id, { headers: {Authorization: 'Bearer ' + authHeader(),
+        "Content-Type": "multipart/form-data"}});
+    }
+
 }
 
 export const fileBookService = new FileBookService();

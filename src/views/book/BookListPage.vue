@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <h1>All Book</h1>
@@ -7,9 +6,9 @@
         v-model="searchId"
         class="search-text"
         type="string"
-        placeholder="Tìm theo id"
+        placeholder="Tìm theo Id"
       />
-      <button class="button" @click="searchById">Tìm kiếm</button>
+      <button v-if="searchId"  class="button" @click="searchById">Tìm kiếm</button>
       <button class="button" @click="add">Thêm</button>
     </div>
     <table>
@@ -21,39 +20,49 @@
           <th>Tác Giả</th>
           <th>Ngày Phát Hành</th>
           <th>Path</th>
+          <th>Option</th>
         </tr>
       </thead>
       <tbody v-for="(item, index) in data" :key="item.id">
         <tr @dblclick="edit(item)">
-
           <td>{{ index + 1 }}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.typeBook}}</td>
-          <td>{{item.author}}</td>
-          <td>{{item.publishedDate}}</td>
-          <td><button @click="readBook(item)">{{item.pathFile}}</button></td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.typeBook }}</td>
+          <td>{{ item.author }}</td>
+          <td>{{ item.publishedDate }}</td>
+          <td>
+            <button @click="readBook(item)">{{ item.pathFile }}</button>
+          </td>
+          <td>
+          <button @click = "addToFavorite(item.id)">Add To Favorite</button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
 <script lang="ts">
-/* eslint-disable */
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { bookService } from "@/service/BookService";
 import { BookResponse } from "@/models/book/BookResponse";
 import { fileBookService } from "@/service";
+import { favoriteBookService } from "@/service/FavoriteBookService";
+import { UserRequest } from "@/models";
 
 //List dùng cho response.
 @Component
 export default class BookListPage extends Vue {
   data: BookResponse[] = [];
+  id?: number;
   searchId?: number | null = null;
-  created() {
+  user: UserRequest = new UserRequest();
+
+  async created() {
     return bookService.getAllBooks().then((res) => {
       this.data = res.data;
     });
   }
+
   edit(item: any) {
     if (!item.id) {
       return;
@@ -63,15 +72,16 @@ export default class BookListPage extends Vue {
       params: { id: item.id },
     });
   }
+
   add() {
     this.$router.push({
       name: "book_add",
     });
   }
+
   searchById() {
     const id = Number(this.searchId);
     if (id !== 0) {
-      
       bookService.getBookById(id).then((res) => {
         console.log(res.data.data);
         this.data = [];
@@ -81,22 +91,47 @@ export default class BookListPage extends Vue {
           author: res.data.data.author,
           typeBook: res.data.data.typeBook,
           publishedDate: res.data.data.publishedDate,
-        });     
+        });
       });
     }
   }
-  readBook(item:any) {
-    if(!item.fileBookId) return ;
+
+  readBook(item: any) {
+    if (!item.fileBookId) return;
     fileBookService.markAsRead(item.fileBookId).then((res) => {
-      alert("read");
+      this.$router.push({
+        name: "view",
+        params: { id: item.fileBookId },
+      });
     });
   }
+
+  addToFavorite(item:any) {
+    if(!item.id) return; 
+    debugger;
+      favoriteBookService.addToFavorite(item.id).then((res) => {
+        favoriteBookService.saveToFavorite(item.id).then((res) => {
+          alert("Add to favorite.");
+          this.$router.push({
+            name: "favorite",
+          });
+        });
+      });
+  }
+
+  load() {
+    if (!this.id) return;
+    return fileBookService.serveFile(this.id).then((res) => {
+      this.data = res.data;
+    });
+  }
+
 }
 </script>
 
 <style scoped>
 h1 {
-  color : white;
+  color: white;
 }
 table {
   margin: auto;
@@ -105,26 +140,24 @@ table {
 }
 
 td {
-  color :black;
-  background-color : white;
+  color: black;
+  background-color: white;
   text-align: center;
 }
-td>button {
-  border :none;
+td > button {
+  border: none;
 }
 
-th {  
-  color:white;
+th {
+  color: white;
   background-color: aqua;
   text-align: center;
 }
 
 th:hover {
-  color:aqua;
+  color: aqua;
   background-color: white;
 }
-
-
 
 th,
 td {
@@ -141,14 +174,14 @@ button {
   margin-top: 20px;
   float: none;
   margin-left: 30px;
-  border : 1px solid black;
+  border: 1px solid black;
 }
 
 td:hover {
   background-color: #0df168!;
 }
 button:hover {
-  color : #0df168;
+  color: #0df168;
 }
 .search-text {
   width: 300px;
@@ -166,24 +199,4 @@ button:hover {
 .search-text {
   width: 20%;
 }
-/* .active-pink-4 input[type=text]:focus:not([readonly]) {
-    border: 1px solid #f48fb1;
-    box-shadow: 0 0 0 1px #f48fb1;
-  }
-  .active-pink-3 input[type=text] {
-    border: 1px solid #f48fb1;
-    box-shadow: 0 0 0 1px #f48fb1;
-  }
-  .active-purple-4 input[type=text]:focus:not([readonly]) {
-    border: 1px solid #ce93d8;
-    box-shadow: 0 0 0 1px #ce93d8;
-  }
-  .active-purple-3 input[type=text] {
-    border: 1px solid #ce93d8;
-    box-shadow: 0 0 0 1px #ce93d8;
-  }
-  .active-cyan-4 input[type=text]:focus:not([readonly]) {
-    border: 1px solid #4dd0e1;
-    box-shadow: 0 0 0 1px #4dd0e1;
-  } */
 </style>

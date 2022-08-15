@@ -16,11 +16,7 @@
             class="form-control"
             name="username"
           />
-          <div
-            v-if="errors.has('username')"
-            class="alert alert-danger"
-            role="alert"
-          >
+          <div v-if="errors.has('username')" class="alert alert-danger" role="alert">
             Username is required!
           </div>
         </div>
@@ -33,27 +29,20 @@
             class="form-control"
             name="password"
           />
-          <div
-            v-if="errors.has('password')"
-            class="alert alert-danger"
-            role="alert"
-          >
+          <div v-if="errors.has('password')" class="alert alert-danger" role="alert">
             Password is required!
           </div>
         </div>
         <div class="form-group">
           <button class="btn btn-primary btn-block" :disabled="loading">
-            <span
-              v-show="loading"
-              class="spinner-border spinner-border-sm"
-            ></span>
+            <span v-show="loading" class="spinner-border spinner-border-sm"></span>
             <span>Login</span>
           </button>
         </div>
         <div class="form-group">
           <div v-if="message" class="alert alert-danger" role="alert">
             {{ message }}
-        </div>
+          </div>
         </div>
       </form>
     </div>
@@ -63,7 +52,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import { UserRequest } from "../../models/user/UserRequest"
+import { UserRequest } from "../../models/user/UserRequest";
 const Auth = namespace("Auth");
 
 @Component
@@ -71,14 +60,12 @@ export default class Login extends Vue {
   user: UserRequest = new UserRequest();
   loading?: boolean = false;
   message?: string = "";
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   errors?: any;
 
   @Auth.Getter
   private isLoggedIn!: boolean;
 
   @Auth.Action
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private login!: (data: any) => Promise<any>;
 
   created() {
@@ -97,7 +84,6 @@ export default class Login extends Vue {
 
       if (this.user.username && this.user.password) {
         this.login(this.user).then(
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           (data) => {
             this.$router.push("/profile");
           },

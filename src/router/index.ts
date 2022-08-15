@@ -6,7 +6,7 @@ import Login from '../views/user/Login.vue'
 import Home from '../views/Home.vue'
 import Register from '../views/user/Register.vue'
 import FileBookListPage from '../views/file_book/FileBookListPage.vue'
-
+import FavoriteBookPage from '@/views/favorite/FavoriteBookPage.vue';
 
 Vue.use(VueRouter)
 
@@ -70,10 +70,16 @@ const routes: Array<RouteConfig> = [
     component: BookEditPage,
   },
   {
-    path: '/book/add',
+    path: '/book',
     name: 'book_add',
     component: BookEditPage,
   },
+  {
+    path: '/fav',
+    name : 'favorite',
+    component : FavoriteBookPage
+  },
+ 
 ]
 
 const router = new VueRouter({
